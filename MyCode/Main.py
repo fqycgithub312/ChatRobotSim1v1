@@ -3,7 +3,6 @@
 """
 from openai import OpenAI
 import json
-
 base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 model = "qwen3.7-plus"
 # base_url="http://localhost:11434/v1"
@@ -587,6 +586,6 @@ def chat(user_query: str) -> str:
 
 # ========== 测试 ==========
 if __name__ == "__main__":
-    user_input = "我要去东京汇报一下AI文献，我的文件还缺少一点资料，要不要带伞？顺便看看从上海到杭州 2026-06-15 的车票"
+    user_input = "我要去毕节汇报一下AI文献，我的文件还缺少一点资料，要不要带伞？顺便看看从上海到杭州 2026-06-15 的车票"
     response=chat(user_input)
     print(f"大模型最终返回结果：\n{response}")
