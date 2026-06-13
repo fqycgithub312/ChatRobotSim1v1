@@ -3,11 +3,18 @@
 """
 from openai import OpenAI
 import json
-base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-model = "qwen3.7-plus"
-# base_url="http://localhost:11434/v1"
-# model="deepseek-r1:1.5b" # 本地大模型
-key = "sk-6ecd6d21f0954a90b7db922a2b9c2894"
+import os
+from dotenv import load_dotenv
+load_dotenv()
+base_url=os.getenv("base_url")
+key=os.getenv("key")
+model=os.getenv("model")
+
+# base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+# model = "qwen3.7-plus"
+# # base_url="http://localhost:11434/v1"
+# # model="deepseek-r1:1.5b" # 本地大模型
+# key = ""
 ## ==========================================================================
 ##sim1>>调用大模型进行对话
 # def myfunc1(a,b):
