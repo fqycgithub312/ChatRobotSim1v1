@@ -5,10 +5,11 @@ from openai import OpenAI
 import json
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
-base_url=os.getenv("base_url")
-key=os.getenv("key")
-model=os.getenv("model")
+base_url = os.getenv("base_url")
+key = os.getenv("key")
+model = os.getenv("model")
 
 # base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 # model = "qwen3.7-plus"
@@ -462,10 +463,12 @@ model=os.getenv("model")
 ## ====================================================================
 # sim0613>>仿真大模型自主决策调用工具
 import random
+
 client = OpenAI(
     base_url=base_url,
     api_key=key,
 )  # 需要设置 OPENAI_API_KEY 环境变量
+
 
 # ========== 模拟工具实现（含查询不到信息的默认返回） ==========
 def download_document(url: str) -> str:
@@ -473,21 +476,25 @@ def download_document(url: str) -> str:
         return f"[模拟] 未能从 {url} 下载到任何文档，请检查链接是否有效"
     return f"[模拟] 已从 {url} 下载文档"
 
+
 def query_weather(city: str) -> str:
     supported_cities = ["北京", "上海", "深圳", "广州"]
     if city not in supported_cities:
         return f"[模拟] 暂未收录「{city}」的天气数据，无法查询到相关信息"
     return f"[模拟] {city} 今日天气：晴 25°C"
 
+
 def query_train_ticket(from_city: str, to_city: str, date: str) -> str:
     if random.random() < 0.78:  # 模拟 30% 概率无票
         return f"[模拟] {date} 从 {from_city} 到 {to_city} 暂未查询到可用车次"
     return f"[模拟] {date} 从 {from_city} 到 {to_city} 的车票：G123 次有票"
 
+
 def organize_ppt(topic: str) -> str:
     if not topic or len(topic) < 2:
         return "[模拟] 主题过于模糊，未能整理出有效的 PPT 内容"
     return f"[模拟] 已整理关于「{topic}」的 PPT 大纲"
+
 
 # 工具名 -> 函数映射
 TOOLS_MAP = {
@@ -553,6 +560,7 @@ TOOL_SCHEMAS = [
     },
 ]
 
+
 def chat(user_query: str) -> str:
     messages = [{"role": "user", "content": user_query}]
 
@@ -576,13 +584,13 @@ def chat(user_query: str) -> str:
             func = TOOLS_MAP.get(tc.function.name)
             args = json.loads(tc.function.arguments)
             print(f"当前tc:\n{func}")
-            print(f"="*35)
+            print(f"=" * 35)
             print(f"调用工具>>{tc.function.name}")
             print(f"传入参数>>{tc.function.arguments}")
-            if func :
+            if func:
                 result = func(**args)
             else:
-                result =f"未知工具：{tc.function.name}"
+                result = f"未知工具：{tc.function.name}"
             messages.append({
                 "role": "tool",
                 "tool_call_id": tc.id,
@@ -591,8 +599,9 @@ def chat(user_query: str) -> str:
 
     return "超出最大工具调用次数"
 
+
 # ========== 测试 ==========
 if __name__ == "__main__":
     user_input = "我要去毕节汇报一下AI文献，我的文件还缺少一点资料，要不要带伞？顺便看看从上海到杭州 2026-06-15 的车票"
-    response=chat(user_input)
+    response = chat(user_input)
     print(f"大模型最终返回结果：\n{response}")
