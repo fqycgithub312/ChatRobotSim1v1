@@ -15,7 +15,7 @@ class StreamChatWindow:
         input_frame = tk.Frame(root)
         input_frame.pack(fill=tk.X, padx=10, pady=10)
 
-        tk.Label(input_frame, text="输入消息:").pack(side=tk.LEFT)
+        tk.Label(input_frame, text="请输入消息:").pack(side=tk.LEFT)
         self.input_entry = tk.Entry(input_frame, width=50)
         self.input_entry.pack(side=tk.LEFT, padx=5)
         self.input_entry.bind('<Return>', lambda e: self.start_stream())
@@ -29,7 +29,7 @@ class StreamChatWindow:
             wrap=tk.WORD,
             width=70,
             height=25,
-            font=('Microsoft YaHei', 10)
+            font=('Microsoft YaHei', 14)
         )
         self.message_area.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
@@ -105,7 +105,4 @@ def main():
     root = tk.Tk()
     app = StreamChatWindow(root)
     root.mainloop()
-
-
-if __name__ == "__main__":
-    main()
+main()
