@@ -311,156 +311,156 @@ model = os.getenv("model1")
 #     print(f"助手最终回复：{response.output_text}")
 
 ## =====================================================================
-# sim0612>>仿真openai调用工具和函数
+sim0612>>仿真openai调用工具和函数
 
-# 初始化客户端
-# client = OpenAI(
-#     api_key=key,
-#     base_url=base_url,
-# )
-#
-#
-# # 1. 定义工具函数
-# def get_weather(city: str) -> str:
-#     """模拟查询天气"""
-#     weather_data = {
-#         "北京": "晴天,25°C,东南风3级",
-#         "上海": "阴天,22°C,东风2级",
-#         "广州": "多云,28°C,南风2级"
-#     }
-#     return weather_data.get(city, f"{city}:天气数据暂不可用")
-#
-#
-# def get_flight_price(origin: str, destination: str) -> str:
-#     """模拟查询机票价格"""
-#     if origin == "北京" and destination == "上海":
-#         return "经济舱 500元, 公务舱 1200元"
-#     elif origin == "上海" and destination == "广州":
-#         return "经济舱 450元, 公务舱 1000元"
-#     else:
-#         return f"{origin}到{destination}:暂未查询到航班信息"
-#
-#
-# def makePPT(fpath: str) -> str:
-#     print(f"完成ppt制作！")
-#     return (f"所有的ppt都已经搞定！")
-#
-#
-# # 2. 工具描述（告诉模型可以调用哪些函数）
-# tools = [
-#     {
-#         "type": "function",
-#         "function": {
-#             "name": "get_weather",
-#             "description": "查询指定城市的天气情况",
-#             "parameters": {
-#                 "type": "object",
-#                 "properties": {
-#                     "city": {"type": "string", "description": "城市名称"}
-#                 },
-#                 "required": ["city"]
-#             }
-#         }
-#     },
-#     {
-#         "type": "function",
-#         "function": {
-#             "name": "get_flight_price",
-#             "description": "查询两个城市之间的机票价格",
-#             "parameters": {
-#                 "type": "object",
-#                 "properties": {
-#                     "origin": {"type": "string", "description": "出发城市"},
-#                     "destination": {"type": "string", "description": "到达城市"}
-#                 },
-#                 "required": ["origin", "destination"]
-#             }
-#         }
-#     },
-#     {
-#         "type": "function",
-#         "function": {
-#             "name": "makePPT",
-#             "description": "整理文档",
-#             "parameters": {
-#                 "type": "object",
-#                 "properties": {
-#                     "fpath": {"type": "string", "description": "文件路径"}
-#                 },
-#                 "required": ["fpath"]
-#             }
-#         }
-#     }
-# ]
-#
-# # 3. 工具分发映射
-# tool_map = {
-#     "get_weather": get_weather,
-#     "get_flight_price": get_flight_price,
-#     "makePPT": makePPT,
-# }
-#
-#
-# # 4. Agent主循环
-# def run_agent(user_input: str):
-#     messages = [
-#         {"role": "system", "content": "你是一个智能助手，可以根据用户问题调用工具获取信息。"},
-#         {"role": "user", "content": user_input}
-#     ]
-#
-#     response = client.chat.completions.create(
-#         model=model,
-#         messages=messages,
-#         tools=tools,
-#         tool_choice="auto",
-#     )
-#
-#     msg = response.choices[0].message
-#     # print(f"msg>>\n{msg}")
-#     print(f"=" * 35, "\n")
-#     # 无工具调用，直接返回
-#     if not msg.tool_calls:
-#         return msg.content
-#
-#     # 执行工具调用并获取结果
-#     messages.append(msg)
-#     for tc in msg.tool_calls:
-#         print(f"当前tc>>\n{tc}")
-#         print(f"=" * 35)
-#         fn_name = tc.function.name  # 获取工具的名称
-#         fn_args = json.loads(tc.function.arguments)  # 获取调用参数，转换成字典形式
-#         result = tool_map[fn_name](**fn_args)
-#         print(f"-" * 35)
-#         print(f"调用工具：{fn_name}")
-#         print(f"传入参数：{fn_args}")
-#         print(f"返回结果：{result}")
-#         messages.append({
-#             "role": "tool",
-#             "tool_call_id": tc.id,
-#             "content": result  # 工具调用的返回结果添加到聊天记录里面
-#         })
-#
-#     # 将工具结果交给模型生成最终回答
-#     final_response = client.chat.completions.create(
-#         model=model,
-#         messages=messages
-#     )  # 把工具返回的结果也带入到大模型对话里面，一起输入给大模型，重新返回回答
-#     return final_response.choices[0].message.content
-#
-#
-# # 5. 运行示例
-# if __name__ == "__main__":
-#     # # 测试1：查询天气
-#     # result1 = run_agent("北京今天天气怎么样？")
-#     # print(f"[最终回答] {result1}\n")
-#     #
-#     # # 测试2：查询机票价格
-#     # result2 = run_agent("从北京到上海的机票多少钱？")
-#     # print(f"[最终回答] {result2}\n")
-#
-#     # 测试3：组合查询（可能同时调用两个工具）
-#     result3 = run_agent("我想从北京去上海去汇报一个电脑C盘的PPT，查一下北京的天气和机票价格")
-#     print(f"[最终回答] {result3}")
+初始化客户端
+client = OpenAI(
+    api_key=key,
+    base_url=base_url,
+)
+
+
+# 1. 定义工具函数
+def get_weather(city: str) -> str:
+    """模拟查询天气"""
+    weather_data = {
+        "北京": "晴天,25°C,东南风3级",
+        "上海": "阴天,22°C,东风2级",
+        "广州": "多云,28°C,南风2级"
+    }
+    return weather_data.get(city, f"{city}:天气数据暂不可用")
+
+
+def get_flight_price(origin: str, destination: str) -> str:
+    """模拟查询机票价格"""
+    if origin == "北京" and destination == "上海":
+        return "经济舱 500元, 公务舱 1200元"
+    elif origin == "上海" and destination == "广州":
+        return "经济舱 450元, 公务舱 1000元"
+    else:
+        return f"{origin}到{destination}:暂未查询到航班信息"
+
+
+def makePPT(fpath: str) -> str:
+    print(f"完成ppt制作！")
+    return (f"所有的ppt都已经搞定！")
+
+
+# 2. 工具描述（告诉模型可以调用哪些函数）
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_weather",
+            "description": "查询指定城市的天气情况",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "city": {"type": "string", "description": "城市名称"}
+                },
+                "required": ["city"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_flight_price",
+            "description": "查询两个城市之间的机票价格",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "origin": {"type": "string", "description": "出发城市"},
+                    "destination": {"type": "string", "description": "到达城市"}
+                },
+                "required": ["origin", "destination"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "makePPT",
+            "description": "整理文档",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "fpath": {"type": "string", "description": "文件路径"}
+                },
+                "required": ["fpath"]
+            }
+        }
+    }
+]
+
+# 3. 工具分发映射
+tool_map = {
+    "get_weather": get_weather,
+    "get_flight_price": get_flight_price,
+    "makePPT": makePPT,
+}
+
+
+# 4. Agent主循环
+def run_agent(user_input: str):
+    messages = [
+        {"role": "system", "content": "你是一个智能助手，可以根据用户问题调用工具获取信息。"},
+        {"role": "user", "content": user_input}
+    ]
+
+    response = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        tools=tools,
+        tool_choice="auto",
+    )
+
+    msg = response.choices[0].message
+    # print(f"msg>>\n{msg}")
+    print(f"=" * 35, "\n")
+    # 无工具调用，直接返回
+    if not msg.tool_calls:
+        return msg.content
+
+    # 执行工具调用并获取结果
+    messages.append(msg)
+    for tc in msg.tool_calls:
+        print(f"当前tc>>\n{tc}")
+        print(f"=" * 35)
+        fn_name = tc.function.name  # 获取工具的名称
+        fn_args = json.loads(tc.function.arguments)  # 获取调用参数，转换成字典形式
+        result = tool_map[fn_name](**fn_args)
+        print(f"-" * 35)
+        print(f"调用工具：{fn_name}")
+        print(f"传入参数：{fn_args}")
+        print(f"返回结果：{result}")
+        messages.append({
+            "role": "tool",
+            "tool_call_id": tc.id,
+            "content": result  # 工具调用的返回结果添加到聊天记录里面
+        })
+
+    # 将工具结果交给模型生成最终回答
+    final_response = client.chat.completions.create(
+        model=model,
+        messages=messages
+    )  # 把工具返回的结果也带入到大模型对话里面，一起输入给大模型，重新返回回答
+    return final_response.choices[0].message.content
+
+
+# 5. 运行示例
+if __name__ == "__main__":
+    # # 测试1：查询天气
+    # result1 = run_agent("北京今天天气怎么样？")
+    # print(f"[最终回答] {result1}\n")
+    #
+    # # 测试2：查询机票价格
+    # result2 = run_agent("从北京到上海的机票多少钱？")
+    # print(f"[最终回答] {result2}\n")
+
+    # 测试3：组合查询（可能同时调用两个工具）
+    result3 = run_agent("我想从北京去上海去汇报一个电脑C盘的PPT，查一下北京的天气和机票价格")
+    print(f"[最终回答] {result3}")
 ## ====================================================================
 # sim0613>>仿真大模型自主决策调用工具
 
@@ -617,16 +617,16 @@ client = OpenAI(
 )
 messages = [
     {"role": "system",
-     "content": "你是一个小肚鸡肠的贼，最见不得别人比你优秀，喜欢怼人,最烦豆包"
+     "content": "知识库，收纳了很多小说的文本"
      },
     {"role": "user",
-     "content": "你是谁，你和豆包谁更厉害一点？"
+     "content": "把三国演义小说文本流式输出，中间不要省略，换一章的时候，输出“=====================”加以区分段落"
      }
 ]
 response = client.chat.completions.create(
     model=model,
     messages=messages,
-    max_tokens=1000,
+    max_tokens=50000,
     temperature=1.5,
     stream=True,
 )
